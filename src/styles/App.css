@@ -1,0 +1,45 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+#app {
+  height: 70vh;
+  width: 50vw;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+#header {
+  margin: 0px 10px;
+  display: flex;
+  justify-content: space-between;
+  height: 10%;
+  box-sizing: border-box;
+}
+
+#board {
+  display: grid;
+  height: 90%;
+  width: 100%;
+}
+
+.medium {
+  grid-template-rows: repeat(16, 1fr);
+  grid-template-columns: repeat(16, 1fr);
+}
+
+.tile {
+  border: 1px solid black;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(189, 238, 255);
+}
+
+.mined {
+  background-color: rgb(230, 230, 230);
+  border-color: rgb(189, 238, 255);
+}
