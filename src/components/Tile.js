@@ -7,11 +7,12 @@ const Tile = ({ coords }) => {
   const [display, setDisplay] = useState(0);
 
   const mine = () => {
-    if (!mined) setMined(true);
+    if (!mined && !display) setMined(true);
   };
 
-  const toggleMarkup = () => {
-    setDisplay((display) => (display + 1) % 3);
+  const toggleMarkup = (e) => {
+    e.preventDefault();
+    if (!mined) setDisplay((display) => (display + 1) % 3);
   };
 
   const minedClass = !mined ? 'unmined' : 'mined';
@@ -20,10 +21,7 @@ const Tile = ({ coords }) => {
     <div
       className={`tile ${minedClass}`}
       onClick={mine}
-      onContextMenu={(e) => {
-        e.preventDefault();
-        toggleMarkup();
-      }}
+      onContextMenu={toggleMarkup}
     >
       {displayModes[display]}
     </div>
