@@ -1,27 +1,30 @@
-import React, { useContext } from 'react';
-import { GameContext } from '../context';
+import React, { useEffect, useContext } from 'react';
+import { GameContext, globalActions } from '../context';
 
 import Tile from './Tile';
 
 const Board = () => {
-  const { tileNumber } = useContext(GameContext);
+  const { dispatch, state } = useContext(GameContext);
 
-  const [rows, columns] = [Math.sqrt(tileNumber), Math.sqrt(tileNumber)];
+  useEffect(() => dispatch({ type: globalActions.INIT_GAME }), []);
 
-  const generateTileId = (index) => {
-    const row = Math.floor(index / rows);
-    const column = index % columns;
-    return [row, column];
-  };
-  const tiles = [];
-
-  for (let i = 0; i < tileNumber; i += 1) {
-    tiles.push(<Tile key={i} coords={generateTileId(i)} />);
+  const { coords, mined, display, hasMine } = state;
+  const tileComponents = [];
+  for (let i = 0; i < state.tileNumber; i += 1) {
+    tileComponents.push(
+      <Tile
+        key={i}
+        coords={coords}
+        mined={mined}
+        display={display}
+        hasMine={hasMine}
+      />
+    );
   }
 
   return (
     <div id="board" className="medium">
-      {tiles}
+      {tileComponents}
     </div>
   );
 };
