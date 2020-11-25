@@ -4,6 +4,7 @@ export const GameContext = createContext();
 
 export const globalActions = {
   INIT_GAME: 'INIT_GAME',
+  MINE_TILE: 'MINE_TILE',
 };
 
 const reducer = (state, action) => {
@@ -29,7 +30,6 @@ const reducer = (state, action) => {
         tiles.push({
           coords: generateTileId(i),
           mined: false,
-          display: 0,
           hasMine: !!mines.includes(i),
         });
       }
@@ -38,6 +38,14 @@ const reducer = (state, action) => {
         ...state,
         mines,
         tiles,
+      };
+    case 'MINE_TILE':
+      const position = action.payload;
+      const newTiles = [...state.tiles];
+      newTiles[position].mined = true;
+      return {
+        ...state,
+        tiles: newTiles,
       };
 
     default:

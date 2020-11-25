@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { GameContext, globalActions } from '../context';
 
-const Tile = ({ coords }) => {
+const Tile = ({ mined, hasMine, coords, position }) => {
+  const { dispatch, state } = useContext(GameContext);
+
   const displayModes = [null, <img src="/flag.png" alt="flagged" />, <b>?</b>];
-
-  const [mined, setMined] = useState(false);
   const [display, setDisplay] = useState(0);
 
   const mine = () => {
-    if (!mined && !display) setMined(true);
+    if (!mined && !display)
+      dispatch({ type: globalActions.MINE_TILE, payload: position });
   };
 
   const toggleMarkup = (e) => {

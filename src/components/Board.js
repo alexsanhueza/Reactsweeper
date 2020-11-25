@@ -8,18 +8,20 @@ const Board = () => {
 
   useEffect(() => dispatch({ type: globalActions.INIT_GAME }), []);
 
-  const { coords, mined, display, hasMine } = state;
   const tileComponents = [];
-  for (let i = 0; i < state.tileNumber; i += 1) {
-    tileComponents.push(
-      <Tile
-        key={i}
-        coords={coords}
-        mined={mined}
-        display={display}
-        hasMine={hasMine}
-      />
-    );
+  if (state.tiles.length) {
+    for (let i = 0; i < state.tileNumber; i += 1) {
+      const { coords, mined, display, hasMine } = state.tiles[i];
+      tileComponents.push(
+        <Tile
+          key={i}
+          position={i}
+          coords={coords}
+          mined={mined}
+          hasMine={hasMine}
+        />
+      );
+    }
   }
 
   return (
