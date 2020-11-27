@@ -1,10 +1,12 @@
 import React, { useReducer, createContext } from 'react';
+import { gameController } from './game-controller';
 
 export const GameContext = createContext();
 
 export const globalActions = {
   INIT_GAME: 'INIT_GAME',
   MINE_TILE: 'MINE_TILE',
+  BLOW_UP: 'BLOW_UP',
 };
 
 const reducer = (state, action) => {
@@ -19,7 +21,7 @@ const reducer = (state, action) => {
 
       const [rows, columns] = [Math.sqrt(tileNumber), Math.sqrt(tileNumber)];
 
-      const generateTileId = (index) => {
+      const generateCoords = (index) => {
         const row = Math.floor(index / rows);
         const column = index % columns;
         return [row, column];
@@ -28,9 +30,10 @@ const reducer = (state, action) => {
 
       for (let i = 0; i < state.tileNumber; i += 1) {
         tiles.push({
-          coords: generateTileId(i),
+          coords: generateCoords(i),
           mined: false,
           hasMine: !!mines.includes(i),
+          adjacentMines: 0,
         });
       }
 
@@ -38,14 +41,19 @@ const reducer = (state, action) => {
         ...state,
         mines,
         tiles,
+        gameOver: false,
       };
     case 'MINE_TILE':
-      const position = action.payload;
-      const newTiles = [...state.tiles];
-      newTiles[position].mined = true;
+      const newTiles = gameController.mineTile(state, action);
       return {
         ...state,
         tiles: newTiles,
+      };
+
+    case 'BLOW_UP':
+      return {
+        ...state,
+        gameOver: true,
       };
 
     default:
@@ -59,6 +67,7 @@ const initialState = {
   tiles: {},
   mineNumber: 40,
   mines: [],
+  gameOver: false,
 };
 
 export const GameContextProvider = ({ children }) => {
