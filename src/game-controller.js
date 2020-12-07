@@ -1,9 +1,14 @@
 const surroundingsGen = (pos, tiles) => {
+  //TODO: fix this helper function so it doesnt add across board
   const surroundings = [];
+  const col = Math.sqrt(tiles.length);
+
+  const start = pos % col === 0 ? 0 : -1;
+  const end = pos % col === col - 1 ? 1 : 2;
 
   for (let i = -1; i < 2; i += 1) {
-    for (let j = -1; j < 2; j += 1) {
-      const posToAdd = pos + (Math.sqrt(tiles.length) * i + j);
+    for (let j = start; j < end; j += 1) {
+      const posToAdd = pos + col * i + j;
       if (posToAdd >= 0 && posToAdd < tiles.length && posToAdd !== pos)
         surroundings.push(posToAdd);
     }

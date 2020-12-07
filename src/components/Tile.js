@@ -10,7 +10,7 @@ const Tile = ({ mined, hasMine, position, adjacentMines }) => {
   const mine = () => {
     if (mined || display) return;
 
-    if (!hasMine)
+    if (!hasMine && !state.gameOver)
       dispatch({ type: globalActions.MINE_TILE, payload: position });
     else if (hasMine) dispatch({ type: globalActions.BLOW_UP });
   };
@@ -29,7 +29,9 @@ const Tile = ({ mined, hasMine, position, adjacentMines }) => {
       onContextMenu={toggleMarkup}
     >
       {displayModes[display]}
-      {state.gameOver && hasMine && <b>.</b>}
+      {state.gameOver && hasMine && (
+        <img src="/mine.png" height="16px" alt="mine" />
+      )}
       {adjacentMines > 0 && mined && adjacentMines}
     </div>
   );
