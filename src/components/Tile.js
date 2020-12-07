@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { GameContext, globalActions } from '../context';
 
-const Tile = ({ mined, hasMine, coords, position, adjacentMines }) => {
+const Tile = ({ mined, hasMine, position, adjacentMines }) => {
   const { dispatch, state } = useContext(GameContext);
 
   const displayModes = [null, <img src="/flag.png" alt="flagged" />, <b>?</b>];
@@ -30,7 +30,7 @@ const Tile = ({ mined, hasMine, coords, position, adjacentMines }) => {
     >
       {displayModes[display]}
       {state.gameOver && hasMine && <b>.</b>}
-      {adjacentMines && adjacentMines}
+      {adjacentMines > 0 && mined && adjacentMines}
     </div>
   );
 };

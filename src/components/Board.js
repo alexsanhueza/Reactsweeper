@@ -11,12 +11,11 @@ const Board = () => {
   const tileComponents = [];
   if (state.tiles.length) {
     for (let i = 0; i < state.tileNumber; i += 1) {
-      const { coords, mined, display, hasMine, adjacentMines } = state.tiles[i];
+      const { mined, display, hasMine, adjacentMines } = state.tiles[i];
       tileComponents.push(
         <Tile
           key={i}
           position={i}
-          coords={coords}
           mined={mined}
           hasMine={hasMine}
           adjacentMines={adjacentMines}
