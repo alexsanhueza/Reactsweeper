@@ -41,18 +41,3 @@ export const gameController = {
     return newTiles;
   },
 };
-
-// const surroundingsCheck = (coords) => {
-//   const q = [];
-
-//   for (let i = -1; i < 2; i += 1) {
-//     for (let j = -1; j < 2; j += 1) {
-//       const positionDiff = i * 16 + j;
-//       if (i || j)
-//         q.push({ coords: [coords[0] + i, coords[1] + j], positionDiff });
-//     }
-//   }
-//   return q;
-// };
-
-// console.log(surroundingsCheck([5, 5]));
