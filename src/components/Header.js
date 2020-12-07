@@ -8,14 +8,32 @@ const Header = () => {
 
   return (
     <div id="header">
-      <p>Difficulty: Medium</p>
-      <p>{smiley}</p>
-      {state.gameOver && (
-        <button onClick={() => dispatch({ type: globalActions.INIT_GAME })}>
-          New Game
-        </button>
-      )}
       <p>Minesweeper</p>
+      <div id="status">
+        <p>{smiley}</p>
+        {state.gameOver && (
+          <button onClick={() => dispatch({ type: globalActions.INIT_GAME })}>
+            New Game
+          </button>
+        )}
+      </div>
+      <div id="difficultySelect">
+        <label htmlFor="difficulty">Difficulty: </label>
+        <select
+          id="difficulty"
+          value={state.difficulty}
+          onChange={(e) =>
+            dispatch({
+              type: globalActions.CHANGE_DIFFICULTY,
+              payload: e.target.value,
+            })
+          }
+        >
+          <option value="Easy">Easy</option>
+          <option value="Medium">Medium</option>
+          <option value="Hard">Hard</option>
+        </select>
+      </div>
     </div>
   );
 };

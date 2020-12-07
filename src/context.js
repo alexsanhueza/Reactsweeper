@@ -7,6 +7,7 @@ export const globalActions = {
   INIT_GAME: 'INIT_GAME',
   MINE_TILE: 'MINE_TILE',
   BLOW_UP: 'BLOW_UP',
+  CHANGE_DIFFICULTY: 'CHANGE_DIFFICULTY',
 };
 
 const reducer = (state, action) => {
@@ -54,6 +55,25 @@ const reducer = (state, action) => {
       return {
         ...state,
         gameOver: true,
+      };
+    case 'CHANGE_DIFFICULTY':
+      const tileNumbers = {
+        Easy: 100,
+        Medium: 256,
+        Hard: 400,
+      };
+      const mineNumbers = {
+        Easy: 25,
+        Medium: 40,
+        Hard: 70,
+      };
+      return {
+        ...state,
+        difficulty: action.payload,
+        tileNumber: tileNumbers[action.payload],
+        mineNumber: mineNumbers[action.payload],
+        tiles: [],
+        mines: [],
       };
 
     default:

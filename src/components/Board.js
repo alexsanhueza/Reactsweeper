@@ -6,12 +6,14 @@ import Tile from './Tile';
 const Board = () => {
   const { dispatch, state } = useContext(GameContext);
 
-  useEffect(() => dispatch({ type: globalActions.INIT_GAME }), []);
+  useEffect(() => dispatch({ type: globalActions.INIT_GAME }), [
+    state.difficulty,
+  ]);
 
   const tileComponents = [];
   if (state.tiles.length) {
     for (let i = 0; i < state.tileNumber; i += 1) {
-      const { mined, display, hasMine, adjacentMines } = state.tiles[i];
+      const { mined, hasMine, adjacentMines } = state.tiles[i];
       tileComponents.push(
         <Tile
           key={i}
@@ -25,7 +27,7 @@ const Board = () => {
   }
 
   return (
-    <div id="board" className="medium">
+    <div id="board" className={state.difficulty.toLowerCase()}>
       {tileComponents}
     </div>
   );

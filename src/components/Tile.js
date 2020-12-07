@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { GameContext, globalActions } from '../context';
 
 const Tile = ({ mined, hasMine, position, adjacentMines }) => {
@@ -20,6 +20,10 @@ const Tile = ({ mined, hasMine, position, adjacentMines }) => {
     if (!mined) setDisplay((display) => (display + 1) % 3);
   };
 
+  useEffect(() => {
+    if (!state.gameOver) setDisplay(0);
+  }, [state.gameOver]);
+
   const minedClass = !mined ? 'unmined' : 'mined';
 
   return (
@@ -30,7 +34,7 @@ const Tile = ({ mined, hasMine, position, adjacentMines }) => {
     >
       {displayModes[display]}
       {state.gameOver && hasMine && (
-        <img src="/mine.png" height="16px" alt="mine" />
+        <img src="/mine.png" height="12px" alt="mine" />
       )}
       {adjacentMines > 0 && mined && adjacentMines}
     </div>
