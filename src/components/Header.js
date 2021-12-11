@@ -6,9 +6,11 @@ const Header = () => {
 
   const smiley = state.gameOver ? `:'(` : ':D';
 
+  console.log(state.remainingMines);
+
   return (
     <div id="header">
-      <p>Minesweeper</p>
+      <p>Mines Remaining: {state.remainingMines}</p>
       <div id="status">
         <p>{smiley}</p>
         {state.gameOver && (

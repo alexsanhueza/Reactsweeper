@@ -39,4 +39,8 @@ export const gameController = {
       this.mineTile(pos, tiles);
     });
   },
+
+  // markTile(tile) {
+  //   if (tile.hasMine)
+  // }
 };

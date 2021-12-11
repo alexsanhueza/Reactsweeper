@@ -1,38 +1,35 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import { GameContext, globalActions } from '../context';
 
-const Tile = ({ mined, hasMine, position, adjacentMines }) => {
+const Tile = ({ mined, hasMine, position, adjacentMines, displayIdx }) => {
   const { dispatch, state } = useContext(GameContext);
 
-  const displayModes = [null, <img src="/flag.png" alt="flagged" />, <b>?</b>];
-  const [display, setDisplay] = useState(0);
+  const displayModes = [null, <b>?</b>, <img src="/flag.png" alt="flagged" />];
 
-  const mine = () => {
-    if (mined || display) return;
+  const mineTile = () => {
+    if (mined || displayIdx > 0) return;
 
     if (!hasMine && !state.gameOver)
       dispatch({ type: globalActions.MINE_TILE, payload: position });
     else if (hasMine) dispatch({ type: globalActions.BLOW_UP });
   };
 
-  const toggleMarkup = (e) => {
+  const flagTile = (e) => {
     e.preventDefault();
-    if (!mined) setDisplay((display) => (display + 1) % 3);
+    if (!mined) {
+      dispatch({ type: globalActions.MARK_TILE, payload: position });
+    }
   };
-
-  useEffect(() => {
-    if (!state.gameOver) setDisplay(0);
-  }, [state.gameOver]);
 
   const minedClass = !mined ? 'unmined' : 'mined';
 
   return (
     <div
       className={`tile ${minedClass}`}
-      onClick={mine}
-      onContextMenu={toggleMarkup}
+      onClick={mineTile}
+      onContextMenu={flagTile}
     >
-      {displayModes[display]}
+      {!mined && displayModes[displayIdx]}
       {state.gameOver && hasMine && (
         <img src="/mine.png" height="12px" alt="mine" />
       )}

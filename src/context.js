@@ -6,13 +6,14 @@ export const GameContext = createContext();
 export const globalActions = {
   INIT_GAME: 'INIT_GAME',
   MINE_TILE: 'MINE_TILE',
+  MARK_TILE: 'MARK_TILE',
   BLOW_UP: 'BLOW_UP',
   CHANGE_DIFFICULTY: 'CHANGE_DIFFICULTY',
 };
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'INIT_GAME':
+    case 'INIT_GAME': {
       const { mineNumber, tileNumber } = state;
 
       const mines = [];
@@ -29,6 +30,7 @@ const reducer = (state, action) => {
           mined: false,
           hasMine: !!mines.includes(i),
           adjacentMines: 0,
+          displayIdx: 0,
         });
       }
 
@@ -40,8 +42,8 @@ const reducer = (state, action) => {
         tiles,
         gameOver: false,
       };
-
-    case 'MINE_TILE':
+    }
+    case 'MINE_TILE': {
       const position = action.payload;
       const newTiles = [...state.tiles];
       gameController.mineTile(position, newTiles);
@@ -50,13 +52,41 @@ const reducer = (state, action) => {
         ...state,
         tiles: newTiles,
       };
+    }
+    case 'MARK_TILE': {
+      const position = action.payload;
+      const newTiles = [...state.tiles];
+      const tile = newTiles[position];
+      const isFlagged = tile.displayIdx === 2;
+      const willBeFlagged = tile.displayIdx === 1;
+      let newRemainingMines = state.remainingMines;
+      console.log(newRemainingMines);
 
-    case 'BLOW_UP':
+      if (isFlagged && tile.hasMine) {
+        console.log('plus one');
+        newRemainingMines += 1;
+        console.log(newRemainingMines);
+      } else if (willBeFlagged && tile.hasMine) {
+        console.log('minus one');
+        newRemainingMines -= 1;
+        console.log(newRemainingMines);
+      }
+
+      tile.displayIdx = (tile.displayIdx + 1) % 3;
+      console.log('why isnt this saving', newRemainingMines);
+      return {
+        ...state,
+        tiles: newTiles,
+        remainingMines: newRemainingMines,
+      };
+    }
+    case 'BLOW_UP': {
       return {
         ...state,
         gameOver: true,
       };
-    case 'CHANGE_DIFFICULTY':
+    }
+    case 'CHANGE_DIFFICULTY': {
       const tileNumbers = {
         Easy: 100,
         Medium: 256,
@@ -72,10 +102,11 @@ const reducer = (state, action) => {
         difficulty: action.payload,
         tileNumber: tileNumbers[action.payload],
         mineNumber: mineNumbers[action.payload],
+        remainingMines: mineNumbers[action.payload],
         tiles: [],
         mines: [],
       };
-
+    }
     default:
       return state;
   }
@@ -86,6 +117,7 @@ const initialState = {
   tileNumber: 256,
   tiles: [],
   mineNumber: 40,
+  remainingMines: 40,
   mines: [],
   gameOver: false,
 };
