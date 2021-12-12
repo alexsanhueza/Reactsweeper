@@ -40,7 +40,30 @@ export const gameController = {
     });
   },
 
-  // markTile(tile) {
-  //   if (tile.hasMine)
-  // }
+  markTile(state, position) {
+    const tiles = [...state.tiles];
+    const tile = tiles[position];
+    const isFlagged = tile.displayIdx === 2;
+    const willBeFlagged = tile.displayIdx === 1;
+    let remainingMines = state.remainingMines;
+    let remainingFlags = state.remainingFlags;
+
+    if (isFlagged) {
+      remainingFlags += 1;
+      if (tile.hasMine) {
+        remainingMines += 1;
+      }
+    } else if (willBeFlagged && remainingFlags) {
+      remainingFlags -= 1;
+      if (tile.hasMine) {
+        remainingMines -= 1;
+      }
+    }
+
+    tile.displayIdx = (tile.displayIdx + 1) % 3;
+
+    const isGameWon = remainingMines === 0;
+
+    return { tiles, remainingMines, remainingFlags, isGameWon };
+  },
 };

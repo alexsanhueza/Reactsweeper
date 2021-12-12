@@ -58,34 +58,16 @@ const reducer = (state, action) => {
     }
     case 'MARK_TILE': {
       const position = action.payload;
-      const newTiles = [...state.tiles];
-      const tile = newTiles[position];
-      const isFlagged = tile.displayIdx === 2;
-      const willBeFlagged = tile.displayIdx === 1;
-      let newRemainingMines = state.remainingMines;
-      let newRemainingFlags = state.remainingFlags;
+      const newState = { ...state };
 
-      if (isFlagged) {
-        newRemainingFlags += 1;
-        if (tile.hasMine) {
-          newRemainingMines += 1;
-        }
-      } else if (willBeFlagged && newRemainingFlags) {
-        newRemainingFlags -= 1;
-        if (tile.hasMine) {
-          newRemainingMines -= 1;
-        }
-      }
-
-      tile.displayIdx = (tile.displayIdx + 1) % 3;
-
-      const isGameWon = newRemainingMines === 0;
+      const { tiles, remainingMines, remainingFlags, isGameWon } =
+        gameController.markTile(newState, position);
 
       return {
         ...state,
-        tiles: newTiles,
-        remainingMines: newRemainingMines,
-        remainingFlags: newRemainingFlags,
+        tiles,
+        remainingMines,
+        remainingFlags,
         gameOver: isGameWon,
       };
     }
