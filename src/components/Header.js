@@ -4,9 +4,9 @@ import GameContext, { globalActions } from '../context';
 const Header = () => {
   const { dispatch, state } = useContext(GameContext);
 
-  let smiley = ':)';
-  if (state.gameOver && !state.remainingMines) smiley = ':D You did it!';
-  else if (state.gameOver) smiley = ":'(";
+  let smiley = '🙂';
+  if (state.gameOver && !state.remainingMines) smiley = '😎';
+  else if (state.gameOver) smiley = '😢';
 
   return (
     <div id="header">
