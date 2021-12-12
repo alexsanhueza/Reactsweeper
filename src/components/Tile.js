@@ -4,7 +4,7 @@ import { GameContext, globalActions } from '../context';
 const Tile = ({ mined, hasMine, position, adjacentMines, displayIdx }) => {
   const { dispatch, state } = useContext(GameContext);
 
-  const displayModes = [null, <b>?</b>, <img src="/flag.png" alt="flagged" />];
+  const displayModes = [null, <img src="/flag.png" alt="flagged" />, <b>?</b>];
 
   const mineTile = () => {
     if (mined || displayIdx > 0) return;

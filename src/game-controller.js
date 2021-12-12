@@ -42,25 +42,29 @@ export const gameController = {
 
   markTile(state, position) {
     const tiles = [...state.tiles];
-    const tile = tiles[position];
-    const isFlagged = tile.displayIdx === 2;
-    const willBeFlagged = tile.displayIdx === 1;
+    const tile = { ...tiles[position] };
+    const isFlagged = tile.displayIdx === 1;
+    const willBeFlagged = tile.displayIdx === 0;
     let remainingMines = state.remainingMines;
     let remainingFlags = state.remainingFlags;
 
     if (isFlagged) {
+      tile.displayIdx = 2;
       remainingFlags += 1;
       if (tile.hasMine) {
         remainingMines += 1;
       }
     } else if (willBeFlagged && remainingFlags) {
+      tile.displayIdx = 1;
       remainingFlags -= 1;
       if (tile.hasMine) {
         remainingMines -= 1;
       }
+    } else {
+      tile.displayIdx = 0;
     }
 
-    tile.displayIdx = (tile.displayIdx + 1) % 3;
+    tiles[position] = tile;
 
     const isGameWon = remainingMines === 0;
 
