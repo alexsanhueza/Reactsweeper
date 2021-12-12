@@ -20,6 +20,7 @@ const reducer = (state, action) => {
       for (let i = 0; i < mineNumber; i += 1) {
         const position = Math.floor(Math.random() * tileNumber);
         if (!mines.includes(position)) mines.push(position);
+        else i -= 1;
       }
 
       const tiles = [];
@@ -41,6 +42,8 @@ const reducer = (state, action) => {
         mines,
         tiles,
         gameOver: false,
+        remainingMines: mineNumber,
+        remainingFlags: mineNumber,
       };
     }
     case 'MINE_TILE': {
@@ -60,24 +63,30 @@ const reducer = (state, action) => {
       const isFlagged = tile.displayIdx === 2;
       const willBeFlagged = tile.displayIdx === 1;
       let newRemainingMines = state.remainingMines;
-      console.log(newRemainingMines);
+      let newRemainingFlags = state.remainingFlags;
 
-      if (isFlagged && tile.hasMine) {
-        console.log('plus one');
-        newRemainingMines += 1;
-        console.log(newRemainingMines);
-      } else if (willBeFlagged && tile.hasMine) {
-        console.log('minus one');
-        newRemainingMines -= 1;
-        console.log(newRemainingMines);
+      if (isFlagged) {
+        newRemainingFlags += 1;
+        if (tile.hasMine) {
+          newRemainingMines += 1;
+        }
+      } else if (willBeFlagged && newRemainingFlags) {
+        newRemainingFlags -= 1;
+        if (tile.hasMine) {
+          newRemainingMines -= 1;
+        }
       }
 
       tile.displayIdx = (tile.displayIdx + 1) % 3;
-      console.log('why isnt this saving', newRemainingMines);
+
+      const isGameWon = newRemainingMines === 0;
+
       return {
         ...state,
         tiles: newTiles,
         remainingMines: newRemainingMines,
+        remainingFlags: newRemainingFlags,
+        gameOver: isGameWon,
       };
     }
     case 'BLOW_UP': {
@@ -103,6 +112,7 @@ const reducer = (state, action) => {
         tileNumber: tileNumbers[action.payload],
         mineNumber: mineNumbers[action.payload],
         remainingMines: mineNumbers[action.payload],
+        remainingFlags: mineNumbers[action.payload],
         tiles: [],
         mines: [],
       };
@@ -118,6 +128,7 @@ const initialState = {
   tiles: [],
   mineNumber: 40,
   remainingMines: 40,
+  remainingFlags: 40,
   mines: [],
   gameOver: false,
 };

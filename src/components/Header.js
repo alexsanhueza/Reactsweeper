@@ -4,13 +4,13 @@ import GameContext, { globalActions } from '../context';
 const Header = () => {
   const { dispatch, state } = useContext(GameContext);
 
-  const smiley = state.gameOver ? `:'(` : ':D';
-
-  console.log(state.remainingMines);
+  let smiley = ':)';
+  if (state.gameOver && !state.remainingMines) smiley = ':D You did it!';
+  else if (state.gameOver) smiley = ":'(";
 
   return (
     <div id="header">
-      <p>Mines Remaining: {state.remainingMines}</p>
+      <p>Flags: {state.remainingFlags}</p>
       <div id="status">
         <p>{smiley}</p>
         {state.gameOver && (
