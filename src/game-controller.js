@@ -1,5 +1,4 @@
 const surroundingsGen = (pos, tiles) => {
-  //TODO: fix this helper function so it doesnt add across board
   const surroundings = [];
   const col = Math.sqrt(tiles.length);
 

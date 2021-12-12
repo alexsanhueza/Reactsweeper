@@ -10,6 +10,27 @@ export const globalActions = {
   BLOW_UP: 'BLOW_UP',
   CHANGE_DIFFICULTY: 'CHANGE_DIFFICULTY',
 };
+const tileNumbers = {
+  Easy: 100,
+  Medium: 256,
+  Hard: 400,
+};
+const mineNumbers = {
+  Easy: 25,
+  Medium: 40,
+  Hard: 70,
+};
+
+const initialState = {
+  difficulty: 'Medium',
+  tileNumber: 256,
+  tiles: [],
+  mineNumber: 40,
+  remainingMines: 40,
+  remainingFlags: 40,
+  mines: [],
+  gameOver: false,
+};
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -78,16 +99,6 @@ const reducer = (state, action) => {
       };
     }
     case 'CHANGE_DIFFICULTY': {
-      const tileNumbers = {
-        Easy: 100,
-        Medium: 256,
-        Hard: 400,
-      };
-      const mineNumbers = {
-        Easy: 25,
-        Medium: 40,
-        Hard: 70,
-      };
       return {
         ...state,
         difficulty: action.payload,
@@ -102,17 +113,6 @@ const reducer = (state, action) => {
     default:
       return state;
   }
-};
-
-const initialState = {
-  difficulty: 'Medium',
-  tileNumber: 256,
-  tiles: [],
-  mineNumber: 40,
-  remainingMines: 40,
-  remainingFlags: 40,
-  mines: [],
-  gameOver: false,
 };
 
 export const GameContextProvider = ({ children }) => {
